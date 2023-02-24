@@ -10,6 +10,8 @@ As clients will already know SmartEntry receives activity reports from various N
   * [Event Selection](#event-selection)
 * [Communication](#communication)
 
+[Return to Main README](../README.md)
+
 ## Setup 
 
 ### Subscribers
