@@ -252,4 +252,5 @@ For example, the request might be as follows:
 
 You will notice that the only fields with non-default/empty values are the first two, type (line 126) and subtype (line 127), and the last two, storeId (line 249) and pmsId (line 250). These four fields are guaranteed to be populated in every request. The other fields are populated, based on the event type/subtype. All fields included here are for informational purposes only.
 
-Note: The *storeId* holds the client's subscriber *Name* while *pmsId* holds the subscriber *ID*.
+Notes:
+1. The *storeId* holds the client's subscriber *Name* while *pmsId* holds the subscriber *ID*.
