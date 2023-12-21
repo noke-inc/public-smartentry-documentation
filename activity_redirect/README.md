@@ -1,8 +1,8 @@
-# Nokē SmartEntry Activity Redirection 
+# Nokē Smart Entry (NSE) Activity Redirection 
 
 ## Overview
 
-As clients will already know SmartEntry receives activity reports from various Nokē devices. This activity can be viewed and searched in the SmartEntry web portal. Some clients may want to receive the same activity event reports from the hardware in near realtime. SmartEntry Activity Redirection allows our servers to forward any activity it receives to a client's server as it is received.
+Clients are aware that Nokē Smart Entry (NSE) collects activity events from various Nokē hardware devices, such as locks, gateways, repeaters, and access devices (gates, doors, and elevators). Users can view and search activity events for each device through the NSE Web Portal. For real-time activity event reports, clients can utilize the NSE Activity Redirection API, which promptly forwards received activity events to the client's subscriber server.
 
 * [Overview](#overview)
 * [Setup](#setup)
@@ -15,30 +15,29 @@ As clients will already know SmartEntry receives activity reports from various N
 ## Setup 
 
 ### Subscribers
-Each client site may have one or more 'subscriber' servers to which Noke will send activity events. For each subscriber, the client will need to the following information to Noke support personnel:
+For each client facility, there may be one or more 'subscriber' servers that Nokē uses to send activity events. To ensure smooth communication, the client must provide the Nokē support personnel with the following information for each subscriber:
 
-* Name - for identifying the subscriber to humans
-* ID - for identifying the subscriber to computers
-* URL - the subscriber URL which Noke will be sending activity events
-* API Key - this is an API key (random string, hash, GUUID, etc) that Noke will use to authenticate itself to the subscriber.
+* Name - The subscriber server's name.
+* ID - The subscriber server's ID number.
+* URL - The subscriber server's URL address where Nokē sends activity events.
+* API Key - The API key (random string, hash, GUUID, etc.) that Nokē uses to authenticate itself to the subscriber server.
 
-As an example, a client could give Noke the following for the setup of two subscribers:
+For example, a client provides Nokē the following information to set up two separate subscribers:
 * Name: "Develop"
 * ID: "1"
 * URL: "https://www.JoesStorage.dev.com/activity?site=312"
-* API Key: "WLBJ9bs1gUw2wFqE97v5"
+* API Key: "WLBJ9bs1gUw2wFqE97v5"* 
 * Name: "Production"
 * ID: "site_17B"
 * URL: "https://www.JoesStorage.com/activity?site=1029"
 * API Key: "1BkMQjUEtdJ5QL4bEg2K"
 
 Notes:
-
-1. The URL should use the https protocol
-1. The URL may contain any query values the clients wish to add to the URL. SmartEntry will use the URL verbatim and will not add any values to the request body other than the requested activity events.
+1. The URL should use the HTTPS encrypted protocol.
+2. The URL may contain any query values the clients want to add to the URL. NSE uses the URL verbatim and does not add any values to the request body other than the requested activity events.
 
 ### Event Selection
-The second thing Noke needs is a list of event types the client wishes to receive. There are a lot of events available so a client may not want to receive them all. Currently (23 Feb 2023), there are 66 event types to choose from:
+Nokē also requires a list of activity event types the client wants to receive. There are a lot of events available, so a client may not want to receive them all. Currently, (23 Feb 2023), there are 66 activity event types to choose from:
 
 * Admin Password Reset
 * Lock Accesscode Remove
@@ -107,15 +106,15 @@ The second thing Noke needs is a list of event types the client wishes to receiv
 * User Password Update
 * User Site Sync
 
-Noke support reps can provide an updated list if necessary.
+Nokē support representatives can provide an updated list, if necessary.
 
 ## Communication
 
-SmartEntry will send an HTTPS request, for any activity events received, to each of the subscriber URL's. The client's subscriber MUST expect a POST request with a body containing a JSON representation of one or more events. The request will also include an authorization bearer token containing the API Key the client specifies.
+NSE sends an HTTPS request for any activity events received to each of the subscriber URL's. The client's subscriber MUST expect a POST request with a body containing a JSON representation of one or more events. The request also includes an authorization bearer token containing the API Key the client specifies.
 
-The subscriber may return a response with any string as the body and any http error code. SmartEntry will not parse the body content but will log it for later reference (as needed). Any HTTP status code other than OK (200) will be considered a failure.
+The subscriber may return a response with any string as the body and any HTTP error code. NSE does not parse the body content but we do log it for later reference, as needed. Any HTTP status code other than OK (200) is considered a failure.
 
-The request will look something like the following:
+For example, the request might be as follows:
 
 	POST /activity?site=312
 	Host: www.JoesStorage.dev.com
@@ -251,6 +250,6 @@ The request will look something like the following:
 		"pmsId": "2"
 	}
 
-You'll notice the only fields with non-default/empty values are the first two (type and subtype) and the last two (storeId and pmsId). These four fields are guaranteed to be populated in every request. The other fields will be populated based on the event type/subtype. All fields are included here for informational purposes.
+You will notice that the only fields with non-default/empty values are the first two, type (line 126) and subtype (line 127), and the last two, storeId (line 249) and pmsId (line 250). These four fields are guaranteed to be populated in every request. The other fields are populated, based on the event type/subtype. All fields included here are for informational purposes only.
 
-Please note that *storeId* will hold the client's subscriber's *Name* while *pmsId* will hold the subscriber *ID*
+Note: The *storeId* holds the client's subscriber *Name* while *pmsId* holds the subscriber *ID*.
